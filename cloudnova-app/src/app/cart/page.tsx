@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import InvoiceModal from "@/components/InvoiceModal";
 
 const PLANS_DATA: Record<
   string,
@@ -60,6 +61,9 @@ function CartContent() {
   const [couponCode, setCouponCode] = useState("");
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [couponMsg, setCouponMsg] = useState<{ text: string; success: boolean } | null>(null);
+
+  // Invoice Modal State
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
 
   // Calculations
   const discountRate = currentPlan.discounts[duration] || 0;
@@ -436,18 +440,44 @@ function CartContent() {
             )}
 
             {/* CTA Button */}
-            <button
-              onClick={handleCheckoutWA}
-              className="w-full py-3.5 rounded-md bg-[#F58220] hover:bg-[#E06D0B] text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              Lanjutkan ke WhatsApp <i className="bi bi-arrow-right text-base"></i>
-            </button>
+            <div className="space-y-2.5">
+              <button
+                onClick={handleCheckoutWA}
+                className="w-full py-3.5 rounded-md bg-[#F58220] hover:bg-[#E06D0B] text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                Lanjutkan ke WhatsApp <i className="bi bi-arrow-right text-base"></i>
+              </button>
+              <button
+                onClick={() => setInvoiceOpen(true)}
+                className="w-full py-2.5 rounded-md bg-white dark:bg-[#1E293B] border border-[#D1D5DB] dark:border-[#334155] text-[#1F2937] dark:text-[#E2E8F0] hover:border-[#F58220] hover:text-[#F58220] font-semibold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <i className="bi bi-file-earmark-pdf text-[#F58220]"></i> Lihat &amp; Cetak Invoice PDF
+              </button>
+            </div>
 
             <span className="block mt-4 text-[11px] text-center text-[#6B7280]">
               <i className="bi bi-shield-check text-emerald-600 me-1"></i> Garansi 30 Hari Uang Kembali &bull; Aman &amp; Terpercaya
             </span>
           </div>
         </div>
+
+        {/* Invoice Modal */}
+        <InvoiceModal
+          isOpen={invoiceOpen}
+          onClose={() => setInvoiceOpen(false)}
+          orderData={{
+            planTitle: currentPlan.title,
+            duration: duration,
+            domain: domainInput,
+            paymentMethod: selectedPayment,
+            clientName: custName,
+            clientEmail: custEmail,
+            subtotal: discountedMonthly * duration,
+            discount: couponDeduction,
+            tax: tax,
+            total: grandTotal,
+          }}
+        />
       </div>
     </div>
   );

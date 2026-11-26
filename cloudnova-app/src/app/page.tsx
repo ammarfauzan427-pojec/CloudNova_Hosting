@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PlanComparisonModal from "@/components/PlanComparisonModal";
 
 const FAQS = [
   {
@@ -462,6 +463,9 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+
+          {/* Plan Comparison Modal Trigger */}
+          <PlanComparisonModal />
 
           {/* ADVISOR CALCULATOR BOX */}
           <div className="p-8 rounded-lg bg-white border border-[#EBECEF] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">

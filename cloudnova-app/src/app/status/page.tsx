@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LatencyTester from "@/components/LatencyTester";
 
 export default function StatusPage() {
   return (
@@ -8,7 +9,7 @@ export default function StatusPage() {
 
       <main className="pt-36 pb-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Overall Status Banner */}
-        <div className="p-8 rounded-lg bg-white border border-[#EBECEF] shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-12">
+        <div className="p-8 rounded-lg bg-white border border-[#EBECEF] shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
           <div className="flex items-center gap-5">
             <div className="w-14 h-14 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 text-3xl shrink-0">
               <i className="bi bi-check-circle-fill"></i>
@@ -25,6 +26,9 @@ export default function StatusPage() {
             <span className="text-xs text-[#6B7280]">Rata-rata Uptime 90 Hari</span>
           </div>
         </div>
+
+        {/* Live Network Latency Ping Test Component */}
+        <LatencyTester />
 
         {/* Datacenter Nodes Grid */}
         <h2 className="text-lg font-bold text-[#1F2937] mb-5 flex items-center gap-2">

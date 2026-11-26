@@ -87,11 +87,6 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FDEEE2] border border-[#F58220]/25 text-[#C25E08] text-xs font-semibold mb-6">
-                <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                Next.js Powered Hosting &bull; High Reliability
-              </div>
-
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#1F2937] tracking-tight leading-[1.15] mb-6">
                 Hosting Super Cepat.{" "}
                 <span className="text-[#F58220] block mt-1">

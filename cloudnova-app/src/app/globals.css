@@ -1,32 +1,45 @@
 @import "tailwindcss";
-
 :root {
-  --bg-main: #080D1B;
-  --bg-secondary: #0D1426;
-  --bg-card: #111B30;
-  --primary: #3478F6;
-  --primary-light: #5794FF;
-  --purple: #8057FF;
-  --text-main: #F8FAFC;
-  --text-muted: #94A3B8;
-  --border: rgba(255, 255, 255, 0.08);
+    --bg-main: #F6F7F9;
+    --bg-secondary: #F9FAFB;
+    --bg-card: #FFFFFF;
+    --primary: #F58220;
+    --primary-light: #FDEEE2;
+    --purple: #8B5CF6;
+    --text-main: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+}
+
+@theme {
+    --color-bg-main: var(--bg-main);
+    --color-bg-secondary: var(--bg-secondary);
+    --color-bg-card: var(--bg-card);
+    --color-primary: var(--primary);
+    --color-primary-light: var(--primary-light);
+    --color-purple: var(--purple);
+    --color-text-main: var(--text-main);
+    --color-text-muted: var(--text-muted);
+    --color-border: var(--border);
 }
 
 body {
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  overflow-x: hidden;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 .animate-floating {
-  animation: float 4s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
 }

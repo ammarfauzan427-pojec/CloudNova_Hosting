@@ -55,6 +55,18 @@ export default function Navbar() {
               Infrastruktur
             </Link>
             <Link
+              href="/cpanel"
+              className="text-sm font-medium text-[#374151] dark:text-[#CBD5E1] hover:text-[#1F2937] dark:hover:text-white hover:bg-[#FDEEE2] dark:hover:bg-[#332014] px-3.5 py-2 rounded-md transition-colors flex items-center gap-1.5"
+            >
+              <i className="bi bi-speedometer2 text-[#F58220]"></i> cPanel
+            </Link>
+            <Link
+              href="/admin"
+              className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-[#1F2937] dark:hover:text-white hover:bg-[#FDEEE2] dark:hover:bg-[#332014] px-3.5 py-2 rounded-md transition-colors flex items-center gap-1.5"
+            >
+              <i className="bi bi-shield-lock"></i> Admin
+            </Link>
+            <Link
               href="/status"
               className="text-sm font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 px-3.5 py-2 rounded-md transition-colors flex items-center gap-1.5"
             >

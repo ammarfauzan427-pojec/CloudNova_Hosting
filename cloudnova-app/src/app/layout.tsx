@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.css";
 
@@ -43,6 +44,11 @@ export default function RootLayout({
     <html lang="id" className={`scroll-smooth ${inter.variable}`}>
       <body className="bg-[#F6F7F9] text-[#1F2937] font-sans antialiased selection:bg-[#F58220] selection:text-white">
         {children}
+        <Script
+          src="https://app.sandbox.midtrans.com/snap/snap.js"
+          data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || "SB-Mid-client-mock"}
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

@@ -29,13 +29,11 @@ export default function PaymentModal({ isOpen, onClose, orderData }: PaymentModa
   if (!isOpen) return null;
 
   const isQRIS = orderData.paymentMethod.toLowerCase().includes("qris") || orderData.paymentMethod.toLowerCase().includes("gopay");
-  const isBCA = orderData.paymentMethod.toLowerCase().includes("bca");
-  const isMandiri = orderData.paymentMethod.toLowerCase().includes("mandiri");
-  const isBRI = orderData.paymentMethod.toLowerCase().includes("bri");
 
-  // Nomor Virtual Account / Rekening Dinamis Berdasarkan Metode Bayar
-  const bankName = isBCA ? "BCA Virtual Account" : isMandiri ? "Mandiri Bill" : isBRI ? "BRI BRIVA" : "BNI Virtual Account";
-  const vaNumber = isBCA ? "8277 0899 6217 8950" : isMandiri ? "8902 2108 9962 1789" : isBRI ? "1284 0008 9962 1789" : "9881 2026 8996 2178";
+  // Rekening Bank SeaBank & Konfirmasi Penerima
+  const bankName = "SeaBank Indonesia";
+  const vaNumber = "901330347726";
+  const accountHolder = "MUHAMMAD AMMAR FAUZAN";
 
   const formatRupiah = (val: number) =>
     new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
@@ -174,37 +172,43 @@ export default function PaymentModal({ isOpen, onClose, orderData }: PaymentModa
 
               {/* TAMPILAN QRIS / REKENING BERDASARKAN METODE */}
               {isQRIS ? (
-                /* QRIS Mode */
+                /* QRIS Mode ShopeePay Muhammad Ammar Fauzan */
                 <div className="p-5 rounded-xl border border-dashed border-[#F58220] bg-orange-50/40 dark:bg-[#332014]/20 text-center space-y-3">
-                  <span className="text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider block">
-                    Scan QRIS (GoPay, OVO, Dana, ShopeePay, BCA)
-                  </span>
+                  <div className="flex items-center justify-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span className="text-[11px] font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider block">
+                      Scan QRIS (ShopeePay / All Bank / E-Wallet)
+                    </span>
+                  </div>
                   
-                  {/* Real QRIS Code Image */}
-                  <div className="w-48 h-48 mx-auto bg-white p-3 rounded-xl border border-gray-300 shadow-md flex flex-col items-center justify-center">
+                  {/* Foto QRIS ShopeePay Asli */}
+                  <div className="w-64 mx-auto bg-white p-3 rounded-xl border border-gray-200 shadow-md">
                     <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020101021226580016ID.CLOUDNAVA.WWW01189360000201100000005204581253033605802ID5917CloudNova_Hosting6007JAKARTA61051295062220718CN${Date.now().toString().slice(-6)}6304`}
-                      alt="QRIS CloudNova Hosting"
-                      className="w-full h-full object-contain"
+                      src="/qris.jpg"
+                      alt="QRIS ShopeePay MUHAMMAD AMMAR FAUZAN"
+                      className="w-full h-auto rounded-lg object-contain"
                     />
                   </div>
 
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                    Buka aplikasi e-wallet atau m-Banking Anda &amp; scan kode QRIS di atas sebelum batas waktu habis.
+                  <p className="text-[11px] text-gray-600 dark:text-gray-300 font-medium">
+                    Penerima: <strong>MUHAMMAD AMMAR FAUZAN</strong>
+                  </p>
+                  <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                    Buka BCA, Mandiri, BRI, Dana, GoPay, atau Shopee lalu scan barcode QRIS di atas.
                   </p>
                 </div>
               ) : (
-                /* Virtual Account / Bank Transfer Mode */
+                /* Bank Transfer Mode SeaBank */
                 <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#0F172A] space-y-3 text-left">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{bankName}</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-bold">
-                      Otomatis Terverifikasi
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold">
+                      Rekening Resmi
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-gray-400 uppercase font-semibold block">Nomor Virtual Account:</span>
+                    <span className="text-[10px] text-gray-400 uppercase font-semibold block">Nomor Rekening:</span>
                     <div className="flex items-center justify-between mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg p-2.5">
                       <span className="font-mono text-base font-extrabold text-[#F58220] tracking-wider">
                         {vaNumber}
@@ -218,9 +222,9 @@ export default function PaymentModal({ isOpen, onClose, orderData }: PaymentModa
                     </div>
                   </div>
 
-                  <div className="text-[11px] text-gray-500 space-y-1 pt-1">
-                    <p>&bull; Masukkan nomor VA di ATM / Mobile Banking.</p>
-                    <p>&bull; Konfirmasi nama penerima: <strong>CloudNova Hosting ID</strong>.</p>
+                  <div className="text-[11px] text-gray-600 dark:text-gray-300 space-y-1 pt-1">
+                    <p>&bull; Bank Tujuan: <strong>SeaBank (Kode: 535)</strong></p>
+                    <p>&bull; Atas Nama: <strong>{accountHolder}</strong></p>
                   </div>
                 </div>
               )}

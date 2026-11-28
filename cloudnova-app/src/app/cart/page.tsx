@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import InvoiceModal from "@/components/InvoiceModal";
 import PaymentModal from "@/components/PaymentModal";
+import AuthModal from "@/components/AuthModal";
 
 const PLANS_DATA: Record<
   string,
@@ -68,6 +69,30 @@ function CartContent() {
 
   // Payment Modal State
   const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+
+  // Auth Modal State
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("cloudnova_user_email");
+    if (saved) {
+      setCustEmail(saved);
+      setIsLoggedIn(true);
+      if (!custName) {
+        setCustName(saved.split("@")[0]);
+      }
+    }
+  }, []);
+
+  const handleStartCheckout = () => {
+    const saved = localStorage.getItem("cloudnova_user_email");
+    if (!saved) {
+      setAuthModalOpen(true);
+      return;
+    }
+    setPaymentModalOpen(true);
+  };
 
   // Calculations
   const discountRate = currentPlan.discounts[duration] || 0;
@@ -443,13 +468,46 @@ function CartContent() {
               </div>
             )}
 
+            {/* User Session Banner in Cart */}
+            {isLoggedIn ? (
+              <div className="mb-4 p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-[11px] text-emerald-800 dark:text-emerald-300 flex items-center justify-between">
+                <span>
+                  <i className="bi bi-person-check-fill me-1"></i> Masuk sebagai: <strong>{custEmail}</strong>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    localStorage.removeItem("cloudnova_user_email");
+                    setIsLoggedIn(false);
+                    setCustEmail("");
+                  }}
+                  className="text-xs text-rose-600 hover:underline font-semibold"
+                >
+                  Ganti
+                </button>
+              </div>
+            ) : (
+              <div className="mb-4 p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-800 dark:text-amber-300 flex items-center justify-between">
+                <span>
+                  <i className="bi bi-info-circle-fill me-1"></i> Wajib login dengan email untuk checkout.
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setAuthModalOpen(true)}
+                  className="text-xs font-bold text-[#F58220] hover:underline"
+                >
+                  Login / Daftar
+                </button>
+              </div>
+            )}
+
             {/* CTA Button */}
             <div className="space-y-2.5">
               <button
-                onClick={() => setPaymentModalOpen(true)}
+                onClick={handleStartCheckout}
                 className="w-full py-3.5 rounded-md bg-[#F58220] hover:bg-[#E06D0B] text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                Bayar Sekarang (Midtrans / QRIS) <i className="bi bi-credit-card-fill text-base"></i>
+                {isLoggedIn ? "Lanjutkan Pembayaran (QRIS / VA)" : "Login Email & Bayar"} <i className="bi bi-arrow-right text-base"></i>
               </button>
               <button
                 onClick={handleCheckoutWA}
@@ -502,6 +560,18 @@ function CartContent() {
             clientEmail: custEmail,
             clientPhone: custPhone,
             total: grandTotal,
+          }}
+        />
+
+        {/* Client Auth Modal */}
+        <AuthModal
+          isOpen={authModalOpen}
+          onClose={() => setAuthModalOpen(false)}
+          onSuccess={(email) => {
+            setCustEmail(email);
+            setIsLoggedIn(true);
+            if (!custName) setCustName(email.split("@")[0]);
+            setPaymentModalOpen(true);
           }}
         />
       </div>

@@ -13,9 +13,29 @@ export default function AdminPage() {
   const [search, setSearch] = useState("");
   const [notification, setNotification] = useState<string | null>(null);
 
+  // Admin PIN Protection State
+  const [adminAuth, setAdminAuth] = useState(false);
+  const [adminPin, setAdminPin] = useState("");
+  const [pinError, setPinError] = useState(false);
+
   useEffect(() => {
+    const isAuth = sessionStorage.getItem("cloudnova_admin_auth");
+    if (isAuth === "true") {
+      setAdminAuth(true);
+    }
     loadData();
   }, []);
+
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminPin === "admin123" || adminPin === "cloudnova2026") {
+      setAdminAuth(true);
+      sessionStorage.setItem("cloudnova_admin_auth", "true");
+      setPinError(false);
+    } else {
+      setPinError(true);
+    }
+  };
 
   const notify = (msg: string) => {
     setNotification(msg);
@@ -116,6 +136,50 @@ export default function AdminPage() {
     new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
 
   const totalRevenue = orders.reduce((acc, curr) => acc + (curr.payment_status === "paid" ? Number(curr.total_amount) : 0), 0);
+
+  if (!adminAuth) {
+    return (
+      <div className="min-h-screen bg-[#F6F7F9] dark:bg-[#0B0F19] text-[#1F2937] dark:text-[#F8FAFC]">
+        <Navbar />
+        <main className="pt-40 pb-24 max-w-md mx-auto px-4">
+          <div className="p-8 rounded-2xl bg-white dark:bg-[#1E293B] border border-[#E5E7EB] dark:border-[#334155] shadow-2xl text-center space-y-5">
+            <div className="w-14 h-14 rounded-2xl bg-gray-900 text-[#F58220] flex items-center justify-center text-2xl mx-auto shadow-sm">
+              <i className="bi bi-shield-lock-fill"></i>
+            </div>
+            <div>
+              <h2 className="text-xl font-extrabold text-[#1F2937] dark:text-white">Admin Security Gate</h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                Masukkan PIN SuperAdmin untuk mengakses data transaksi &amp; kontrol cPanel.
+              </p>
+            </div>
+
+            {pinError && (
+              <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold">
+                PIN Admin salah! (Gunakan: admin123)
+              </div>
+            )}
+
+            <form onSubmit={handleAdminLogin} className="space-y-4">
+              <input
+                type="password"
+                placeholder="Masukkan PIN Admin (admin123)"
+                value={adminPin}
+                onChange={(e) => setAdminPin(e.target.value)}
+                className="w-full text-center tracking-widest text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl px-4 py-3 focus:outline-none focus:border-[#F58220]"
+              />
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#F58220] hover:bg-[#E06D0B] text-white font-bold text-xs rounded-xl transition-all cursor-pointer shadow-xs"
+              >
+                Buka SuperAdmin Panel &rarr;
+              </button>
+            </form>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F6F7F9] dark:bg-[#0B0F19] text-[#1F2937] dark:text-[#F8FAFC]">
